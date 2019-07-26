@@ -43,41 +43,49 @@ namespace ExcelPractice_
             int imageNumber = 0;
             int imageLocation = 3;
 
+
+            Dictionary<int, string> ASINREF = new Dictionary<int, string>();
+
+            for (int i = 2; i < 1790; i++)
+            {
+                string ASIN = excel.ReadCell(i, 18);
+                
+                ASINREF.Add(i, ASIN);        
+            }
+
+            foreach (KeyValuePair<int, string> bubs in ASINREF)
+            {
+                Console.WriteLine("Key: {0}, Value: {1}",
+                bubs.Key, bubs.Value);
+            }
+
             while (cellCount != 1790)
             {
+                imageNumber = 0;
 
-                string ASIN = excel.ReadCell(cellCount, 18);
-
-                if (excel.ReadCell(cellCount, 18) == "")
+                if (ASINREF[cellCount] != "")
                 {
-                    cellCount++;
-                }
-
-                else
-                {
-                    
-                    //string ASIN = "B07MGZKYJ8";
-                    driver.Url = "https://www.amazon.com/dp/" + ASIN;
+                    driver.Url = "https://www.amazon.com/dp/" + ASINREF[cellCount];
 
                     while (IsElementPresent(By.CssSelector("li.a-spacing-small:nth-child(" + imageLocation + ")"), driver) == true)
                     { 
-                        //var image = driver.FindElement(By.CssSelector("li.a-spacing-small:nth-child(" + imageLocation + ")"));
                         imageLocation++;
-                        imageNumber++;
-                        
+                        imageNumber++; 
                     }
 
                     Console.WriteLine(imageNumber);
-                    cellCount++;
-                    imageNumber = 0;
-                    imageLocation = 3;
-
-                    //something that records imageNumber in a column in excel
+                    
+                    imageLocation = 3; 
                 }
 
+                excel.WriteToCell(cellCount, 19, imageNumber);
+
+                cellCount++;
             }
 
-            Console.ReadKey();
+            excel.Save();
+            excel.Quit();
+            driver.Quit();
 
         }
     }

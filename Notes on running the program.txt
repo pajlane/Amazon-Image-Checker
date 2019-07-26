@@ -1,0 +1,4 @@
+
+
+Make sure ASIN column is formatted as text and not integers.
+Make sure there are no spaces or #N/A or any weird characters in the asins column

@@ -25,18 +25,34 @@ namespace ExcelPractice_
         }
         public string ReadCell(int i, int j)
         {
-            i++;
-            j++;
+            //i++;
+            //j++;
+
+            return ws.Cells[i, j].Value2 ?? "";
+
             if (ws.Cells[i, j].Value2 != null)
                 return ws.Cells[i, j].Value2;
             else
                 return "";
         }
 
-        public void Close()
+        public void WriteToCell(int i, int j, int s)
         {
-            wb.Close(0);
+            //i++;
+            //j++;
+            ws.Cells[i, j].Value2 = s;
         }
+
+        public void Save()
+        {
+            wb.Save();
+        }
+
+        public void Quit()
+        {
+            excel.Quit();
+        }
+
 
     }
 }
